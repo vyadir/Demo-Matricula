@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Mi matrícula{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">RF-12 a RF-16</span>
+        <h1>Mi matrícula</h1>
+        <p class="muted">Revisa cursos agregados, lista de espera, montos y genera el estado de cuenta cuando estés listo.</p>
+    </div>
+</section>
+
+{% if details %}
+    {% set first = details[0] %}
+    <section class="grid grid-3">
+        <article class="stat-card">
+            <span>Matrícula</span>
+            <strong>{{ first.numero_matricula }}</strong>
+        </article>
+        <article class="stat-card">
+            <span>Créditos</span>
+            <strong>{{ first.total_creditos }}</strong>
+        </article>
+        <article class="stat-card">
+            <span>Total</span>
+            <strong>{{ first.total|currency }}</strong>
+        </article>
+    </section>
+
+    <div class="table-wrap card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Curso</th>
+                    <th>Sección</th>
+                    <th>Horario</th>
+                    <th>Estado</th>
+                    <th>Costo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in details %}
+                    <tr>
+                        <td>{{ row.curso_codigo }} · {{ row.curso_nombre }}</td>
+                        <td>{{ row.codigo_seccion }}</td>
+                        <td>{{ row.horario }}</td>
+                        <td><span class="badge {% if row.estado == 'MATRICULADO' %}success{% else %}warning{% endif %}">{{ row.estado }}</span></td>
+                        <td>{{ row.costo_unitario|currency }}</td>
+                        <td>
+                            <form method="post" action="/student/drop/{{ row.id }}">
+                                <button class="button ghost small" type="submit">Quitar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <article class="card callout">
+        <div>
+            <h2>Subtotal: {{ first.subtotal|currency }}</h2>
+            <p>Descuento aplicado: {{ first.descuento|currency }} · Total a pagar: <strong>{{ first.total|currency }}</strong></p>
+        </div>
+        <form method="post" action="/student/checkout/{{ first.matricula_id }}">
+            <button class="button" type="submit">Generar estado de cuenta</button>
+        </form>
+    </article>
+{% else %}
+    <article class="card">
+        <h2>Aún no tienes cursos agregados</h2>
+        <p>Explora la oferta académica para iniciar tu proceso.</p>
+        <a class="button" href="/student/offer">Ir a oferta académica</a>
+    </article>
+{% endif %}
+{% endblock %}

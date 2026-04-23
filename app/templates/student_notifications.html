@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Notificaciones{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">RF-23 y RF-24</span>
+        <h1>Centro de notificaciones</h1>
+        <p class="muted">Aquí se concentran avisos sobre matrícula, pagos, cambios y recordatorios.</p>
+    </div>
+</section>
+
+<div class="stack">
+    {% for item in notifications %}
+        <article class="card">
+            <div class="card-header">
+                <h2>{{ item.asunto }}</h2>
+                <span class="badge {% if item.estado == 'LEIDA' %}success{% else %}warning{% endif %}">{{ item.estado }}</span>
+            </div>
+            <p>{{ item.mensaje }}</p>
+            <div class="meta-line">
+                <span>{{ item.enviada_en|format_datetime }}</span>
+                {% if item.estado != 'LEIDA' %}
+                    <form method="post" action="/student/notifications/{{ item.id }}/read">
+                        <button class="button ghost small" type="submit">Marcar como leída</button>
+                    </form>
+                {% endif %}
+            </div>
+        </article>
+    {% else %}
+        <article class="card">
+            <p>No hay notificaciones pendientes.</p>
+        </article>
+    {% endfor %}
+</div>
+{% endblock %}

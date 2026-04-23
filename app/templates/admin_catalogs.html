@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+{% block title %}Catálogos administrativos{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">Gestión académica y oferta</span>
+        <h1>Catálogos y configuración</h1>
+        <p class="muted">Administra programas, planes, cursos, reglas, periodos, aulas y secciones desde una sola vista.</p>
+    </div>
+</section>
+
+<section class="grid grid-2">
+    <article class="card">
+        <h2>Nuevo programa académico</h2>
+        <form method="post" action="/admin/programs" class="grid-form">
+            <input name="codigo" placeholder="Código" required>
+            <input name="nombre" placeholder="Nombre" required>
+            <input name="nivel_titulo" placeholder="Nivel de título" required>
+            <input name="facultad" placeholder="Facultad">
+            <input name="departamento" placeholder="Departamento">
+            <button class="button" type="submit">Guardar programa</button>
+        </form>
+    </article>
+
+    <article class="card">
+        <h2>Nuevo plan de estudio</h2>
+        <form method="post" action="/admin/plans" class="grid-form">
+            <select name="programa_academico_id" required>
+                <option value="">Programa</option>
+                {% for item in programs %}
+                    <option value="{{ item.id }}">{{ item.codigo }} · {{ item.nombre }}</option>
+                {% endfor %}
+            </select>
+            <input name="codigo" placeholder="Código" required>
+            <input name="nombre" placeholder="Nombre" required>
+            <input name="version" placeholder="Versión" required>
+            <input type="number" step="0.01" name="creditos_totales" placeholder="Créditos totales" required>
+            <input type="date" name="fecha_vigencia_inicio">
+            <input type="date" name="fecha_vigencia_fin">
+            <button class="button" type="submit">Guardar plan</button>
+        </form>
+    </article>
+
+    <article class="card">
+        <h2>Nuevo curso</h2>
+        <form method="post" action="/admin/courses" class="grid-form">
+            <input name="codigo" placeholder="Código" required>
+            <input name="nombre" placeholder="Nombre" required>
+            <input name="descripcion" placeholder="Descripción">
+            <input type="number" step="0.01" name="creditos" placeholder="Créditos" required>
+            <input type="number" name="horas_teoria" placeholder="Horas teoría" required>
+            <input type="number" name="horas_practica" placeholder="Horas práctica" required>
+            <button class="button" type="submit">Guardar curso</button>
+        </form>
+    </article>
+
+    <article class="card">
+        <h2>Reglas del curso</h2>
+        <form method="post" action="/admin/prerequisites" class="grid-form compact-form">
+            <select name="course_id" required>
+                <option value="">Curso</option>
+                {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.codigo }} · {{ course.nombre }}</option>
+                {% endfor %}
+            </select>
+            <select name="prereq_id" required>
+                <option value="">Prerequisito</option>
+                {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.codigo }} · {{ course.nombre }}</option>
+                {% endfor %}
+            </select>
+            <button class="button ghost" type="submit">Agregar prerequisito</button>
+        </form>
+        <form method="post" action="/admin/corequisites" class="grid-form compact-form">
+            <select name="course_id" required>
+                <option value="">Curso</option>
+                {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.codigo }} · {{ course.nombre }}</option>
+                {% endfor %}
+            </select>
+            <select name="coreq_id" required>
+                <option value="">Correquisito</option>
+                {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.codigo }} · {{ course.nombre }}</option>
+                {% endfor %}
+            </select>
+            <button class="button ghost" type="submit">Agregar correquisito</button>
+        </form>
+    </article>
+
+    <article class="card">
+        <h2>Nuevo periodo académico</h2>
+        <form method="post" action="/admin/periods" class="grid-form">
+            <input name="codigo" placeholder="Código" required>
+            <input name="nombre" placeholder="Nombre" required>
+            <select name="tipo_periodo" required>
+                <option value="SEMESTRE">SEMESTRE</option>
+                <option value="CUATRIMESTRE">CUATRIMESTRE</option>
+                <option value="TRIMESTRE">TRIMESTRE</option>
+            </select>
+            <select name="estado" required>
+                <option value="PLANIFICADO">PLANIFICADO</option>
+                <option value="ACTIVO">ACTIVO</option>
+                <option value="CERRADO">CERRADO</option>
+            </select>
+            <label>Inicio<input type="date" name="fecha_inicio" required></label>
+            <label>Fin<input type="date" name="fecha_fin" required></label>
+            <label>Inicio matrícula<input type="datetime-local" name="fecha_inicio_matricula" required></label>
+            <label>Fin matrícula<input type="datetime-local" name="fecha_fin_matricula" required></label>
+            <label>Inicio ajuste<input type="datetime-local" name="fecha_inicio_ajuste"></label>
+            <label>Fin ajuste<input type="datetime-local" name="fecha_fin_ajuste"></label>
+            <input type="number" step="0.01" name="maximo_creditos" placeholder="Máximo créditos" required>
+            <button class="button" type="submit">Guardar periodo</button>
+        </form>
+    </article>
+
+    <article class="card">
+        <h2>Nueva aula</h2>
+        <form method="post" action="/admin/classrooms" class="grid-form">
+            <input name="codigo" placeholder="Código" required>
+            <input name="edificio" placeholder="Edificio">
+            <input name="sede" placeholder="Sede">
+            <input type="number" name="capacidad" placeholder="Capacidad" required>
+            <button class="button" type="submit">Guardar aula</button>
+        </form>
+    </article>
+
+    <article class="card card-span-2">
+        <h2>Nueva sección</h2>
+        <form method="post" action="/admin/sections" class="grid-form wide">
+            <select name="periodo_academico_id" required>
+                <option value="">Periodo</option>
+                {% for item in periods %}
+                    <option value="{{ item.id }}">{{ item.codigo }} · {{ item.nombre }}</option>
+                {% endfor %}
+            </select>
+            <select name="curso_id" required>
+                <option value="">Curso</option>
+                {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.codigo }} · {{ course.nombre }}</option>
+                {% endfor %}
+            </select>
+            <input name="codigo_seccion" placeholder="Código de sección" required>
+            <select name="docente_id">
+                <option value="">Docente</option>
+                {% for teacher in teachers %}
+                    <option value="{{ teacher.id }}">{{ teacher.codigo_empleado }} · {{ teacher.apellidos }}, {{ teacher.nombres }}</option>
+                {% endfor %}
+            </select>
+            <select name="aula_id">
+                <option value="">Aula</option>
+                {% for classroom in classrooms %}
+                    <option value="{{ classroom.id }}">{{ classroom.codigo }}</option>
+                {% endfor %}
+            </select>
+            <select name="modalidad" required>
+                <option value="PRESENCIAL">PRESENCIAL</option>
+                <option value="VIRTUAL">VIRTUAL</option>
+                <option value="HIBRIDA">HIBRIDA</option>
+            </select>
+            <input type="number" name="cupo" placeholder="Cupo" required>
+            <input type="number" name="cupo_lista_espera" placeholder="Cupo lista espera" required>
+            <select name="estado" required>
+                <option value="ABIERTA">ABIERTA</option>
+                <option value="PLANIFICADA">PLANIFICADA</option>
+                <option value="CERRADA">CERRADA</option>
+                <option value="CANCELADA">CANCELADA</option>
+            </select>
+            <select name="dia_semana" required>
+                <option value="1">Lunes</option>
+                <option value="2">Martes</option>
+                <option value="3">Miércoles</option>
+                <option value="4">Jueves</option>
+                <option value="5">Viernes</option>
+                <option value="6">Sábado</option>
+                <option value="7">Domingo</option>
+            </select>
+            <input type="time" name="hora_inicio" required>
+            <input type="time" name="hora_fin" required>
+            <input name="observaciones" placeholder="Observaciones">
+            <button class="button" type="submit">Guardar sección</button>
+        </form>
+    </article>
+</section>
+
+<section class="grid grid-2">
+    <article class="card">
+        <div class="card-header"><h2>Programas</h2></div>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Código</th><th>Nombre</th><th>Nivel</th></tr></thead>
+                <tbody>
+                    {% for row in programs %}
+                        <tr><td>{{ row.codigo }}</td><td>{{ row.nombre }}</td><td>{{ row.nivel_titulo }}</td></tr>
+                    {% else %}
+                        <tr><td colspan="3">Sin registros.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <article class="card">
+        <div class="card-header"><h2>Cursos y reglas</h2></div>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Curso</th><th>Prereq</th><th>Correq</th></tr></thead>
+                <tbody>
+                    {% for row in course_rules %}
+                        <tr><td>{{ row.curso_codigo }} · {{ row.curso_nombre }}</td><td>{{ row.prerequisito_codigo or '—' }}</td><td>{{ row.correquisito_codigo or '—' }}</td></tr>
+                    {% else %}
+                        <tr><td colspan="3">Sin reglas registradas.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <article class="card card-span-2">
+        <div class="card-header"><h2>Secciones</h2></div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Periodo</th>
+                        <th>Curso</th>
+                        <th>Sección</th>
+                        <th>Aula</th>
+                        <th>Docente</th>
+                        <th>Cupos</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in sections %}
+                        <tr>
+                            <td>{{ row.periodo_codigo }}</td>
+                            <td>{{ row.curso_codigo }} · {{ row.curso_nombre }}</td>
+                            <td>{{ row.codigo_seccion }}</td>
+                            <td>{{ row.aula_codigo or '—' }}</td>
+                            <td>{{ row.docente_nombre or '—' }}</td>
+                            <td>{{ row.total_matriculados }}/{{ row.cupo }}</td>
+                            <td>{{ row.estado }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="7">Sin secciones creadas.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    
+    <article class="card">
+        <h2>Asignar rol a usuario</h2>
+        <form method="post" action="/admin/user-roles" class="grid-form">
+            <select name="user_id" required>
+                <option value="">Usuario</option>
+                {% for item in users %}
+                    <option value="{{ item.id }}">{{ item.nombre_usuario }} · {{ item.correo }}</option>
+                {% endfor %}
+            </select>
+            <select name="role_id" required>
+                <option value="">Rol</option>
+                {% for role in roles %}
+                    <option value="{{ role.id }}">{{ role.codigo }}</option>
+                {% endfor %}
+            </select>
+            <button class="button" type="submit">Asignar rol</button>
+        </form>
+    </article>
+
+
+    <article class="card card-span-2">
+        <div class="card-header"><h2>Usuarios</h2></div>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Usuario</th><th>Correo</th><th>Roles</th><th>Estado</th></tr></thead>
+                <tbody>
+                    {% for row in users %}
+                        <tr><td>{{ row.nombre_usuario }}</td><td>{{ row.correo }}</td><td>{{ row.roles }}</td><td>{{ row.estado }}</td></tr>
+                    {% else %}
+                        <tr><td colspan="4">Sin usuarios.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>
+{% endblock %}

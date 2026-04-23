@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Panel administrativo{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">Panel administrativo</span>
+        <h1>Hola, {{ current_user.nombres }}</h1>
+        <p class="muted">Gestiona catálogos, consulta reportes y revisa la operación académica y financiera.</p>
+    </div>
+    <div class="button-row">
+        <a class="button" href="/admin/catalogs">Catálogos</a>
+        <a class="button ghost" href="/reports">Reportes</a>
+        {% if current_user.roles and ('AUDITOR' in current_user.roles or 'ADMIN_TI' in current_user.roles) %}
+            <a class="button ghost" href="/audit">Auditoría</a>
+        {% endif %}
+    </div>
+</section>
+
+<section class="grid grid-4">
+    <article class="stat-card">
+        <span>Usuarios activos</span>
+        <strong>{{ overview.usuarios_activos }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Estudiantes activos</span>
+        <strong>{{ overview.estudiantes_activos }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Secciones abiertas</span>
+        <strong>{{ overview.secciones_abiertas }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Facturas pendientes</span>
+        <strong>{{ overview.facturas_pendientes }}</strong>
+    </article>
+</section>
+{% endblock %}

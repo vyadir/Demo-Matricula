@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Oferta académica{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">RF-11 · Oferta académica</span>
+        <h1>Oferta para matrícula</h1>
+        <p class="muted">Busca cursos por código, nombre, sección o aula. Las validaciones críticas se ejecutan en la base de datos.</p>
+    </div>
+    <div class="button-row">
+        <a class="button ghost" href="/student/enrollment">Ver matrícula actual</a>
+    </div>
+</section>
+
+{% if period %}
+    <article class="card">
+        <form method="get" class="search-bar">
+            <input type="text" name="search" value="{{ search }}" placeholder="Buscar curso, sección o aula">
+            <button class="button" type="submit">Buscar</button>
+        </form>
+    </article>
+
+    <div class="table-wrap card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Curso</th>
+                    <th>Sección</th>
+                    <th>Horario</th>
+                    <th>Cupos</th>
+                    <th>Lista de espera</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for section in sections %}
+                    <tr>
+                        <td>
+                            <strong>{{ section.curso_codigo }}</strong><br>
+                            {{ section.curso_nombre }}<br>
+                            <span class="muted">{{ section.creditos }} créditos · {{ section.modalidad }} · {{ section.aula_codigo }}</span>
+                        </td>
+                        <td>{{ section.codigo_seccion }}</td>
+                        <td>{{ section.horario }}</td>
+                        <td>{{ section.total_matriculados }}/{{ section.cupo }}</td>
+                        <td>{{ section.total_lista_espera }}/{{ section.cupo_lista_espera }}</td>
+                        <td>
+                            <form method="post" action="/student/enroll/{{ section.id }}">
+                                <button class="button small" type="submit">Agregar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="6">No hay secciones disponibles para el filtro ingresado.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <article class="card">
+        <h2>No hay periodo habilitado</h2>
+        <p>Abre un periodo de matrícula desde catálogos administrativos para continuar.</p>
+    </article>
+{% endif %}
+{% endblock %}

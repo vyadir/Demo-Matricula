@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Auditoría{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">RF-03 · Bitácora de auditoría</span>
+        <h1>Trazabilidad de cambios</h1>
+        <p class="muted">Consulta inserciones, cambios y eliminaciones sobre datos críticos.</p>
+    </div>
+</section>
+
+<article class="card">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Tabla</th>
+                    <th>Operación</th>
+                    <th>Registro</th>
+                    <th>Usuario</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in entries %}
+                    <tr>
+                        <td>{{ row.fecha_cambio|format_datetime }}</td>
+                        <td>{{ row.tabla }}</td>
+                        <td>{{ row.operacion }}</td>
+                        <td>{{ row.id_registro }}</td>
+                        <td>{{ row.usuario_cambio or 'app' }}</td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="5">No hay eventos registrados todavía.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</article>
+{% endblock %}

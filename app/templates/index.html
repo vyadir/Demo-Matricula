@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Inicio · Sistema de Matrícula{% endblock %}
+{% block content %}
+<section class="hero hero-landing">
+    <div class="hero-copy card surface-soft">
+        <span class="eyebrow">Portal institucional</span>
+        <h1>Matrícula en línea con una experiencia clara, ágil y segura</h1>
+        <p class="lead">
+            Consulta la oferta académica, gestiona tu inscripción, revisa tu estado de cuenta y accede a tus comprobantes
+            desde un solo portal diseñado para estudiantes y áreas administrativas.
+        </p>
+        <div class="button-row">
+            {% if current_user %}
+                <a class="button" href="/app">Ir al panel</a>
+            {% else %}
+                <a class="button" href="/login">Acceder</a>
+                <a class="button ghost" href="/auth/sso">Acceso institucional</a>
+            {% endif %}
+        </div>
+        <div class="meta-line">
+            {% if active_period %}
+                <span class="badge success">Periodo activo: {{ active_period.nombre }}</span>
+            {% else %}
+                <span class="badge warning">Sin periodo de matrícula abierto</span>
+            {% endif %}
+            <span class="badge neutral">Disponibilidad para estudiantes y equipos administrativos</span>
+        </div>
+    </div>
+
+    <aside class="hero-panel card accent-panel">
+        <span class="eyebrow eyebrow-soft">Servicios principales</span>
+        <div class="feature-list">
+            <article class="feature-item">
+                <h2>Inscripción académica</h2>
+                <p>Oferta, validaciones, cupos y seguimiento de matrícula en un flujo simple.</p>
+            </article>
+            <article class="feature-item">
+                <h2>Gestión financiera</h2>
+                <p>Estados de cuenta, pagos, saldos y comprobantes desde el mismo entorno.</p>
+            </article>
+            <article class="feature-item">
+                <h2>Control institucional</h2>
+                <p>Catálogos, reportes y auditoría para áreas de registro, tesorería y soporte.</p>
+            </article>
+        </div>
+    </aside>
+</section>
+
+<section class="grid grid-3 landing-grid compact-top">
+    <article class="card">
+        <h3>Diseño orientado a tarea</h3>
+        <p>Jerarquía visual limpia, navegación breve y componentes consistentes para reducir fricción.</p>
+    </article>
+    <article class="card">
+        <h3>Lenguaje visual confiable</h3>
+        <p>Paleta sobria con contraste alto, acentos controlados y foco en legibilidad y estabilidad.</p>
+    </article>
+    <article class="card">
+        <h3>Listo para operación</h3>
+        <p>Interfaz responsive, estructura modular y despliegue reproducible sobre Docker.</p>
+    </article>
+</section>
+{% endblock %}

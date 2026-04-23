@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Panel del estudiante{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">Portal estudiantil</span>
+        <h1>Hola, {{ current_user.nombres }}</h1>
+        <p class="muted">Consulta tu oferta académica, matrícula, estado financiero y notificaciones en un solo lugar.</p>
+    </div>
+    <div class="meta-line">
+        {% if active_period %}
+            <span class="badge success">{{ active_period.codigo }} · {{ active_period.nombre }}</span>
+        {% endif %}
+        <span class="badge">{{ student_profile.carnet }}</span>
+        <span class="badge">{{ student_profile.programa_nombre }}</span>
+    </div>
+</section>
+
+<section class="grid grid-4">
+    <article class="stat-card">
+        <span>Cursos en proceso</span>
+        <strong>{{ summary.cursos }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Total estimado</span>
+        <strong>{{ summary.total|currency }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Saldo pendiente</span>
+        <strong>{{ summary.saldo|currency }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Notificaciones</span>
+        <strong>{{ summary.pendientes }}</strong>
+    </article>
+</section>
+
+<section class="grid grid-2">
+    <article class="card">
+        <div class="card-header">
+            <h2>Accesos rápidos</h2>
+        </div>
+        <div class="button-grid">
+            <a class="button" href="/student/offer">Ver oferta</a>
+            <a class="button ghost" href="/student/enrollment">Mi matrícula</a>
+            <a class="button ghost" href="/student/finance">Pagos</a>
+            <a class="button ghost" href="/student/notifications">Notificaciones</a>
+        </div>
+    </article>
+
+    <article class="card">
+        <div class="card-header">
+            <h2>Perfil académico</h2>
+        </div>
+        <dl class="details-list">
+            <div><dt>Estado</dt><dd>{{ student_profile.estado }}</dd></div>
+            <div><dt>Promedio</dt><dd>{{ student_profile.promedio_actual or 'N/D' }}</dd></div>
+            <div><dt>Créditos aprobados</dt><dd>{{ student_profile.creditos_aprobados }}</dd></div>
+            <div><dt>Programa</dt><dd>{{ student_profile.programa_nombre }}</dd></div>
+        </dl>
+    </article>
+</section>
+
+<section class="grid grid-2">
+    <article class="card">
+        <div class="card-header">
+            <h2>Matrícula actual</h2>
+            <a href="/student/enrollment">Abrir detalle</a>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Curso</th>
+                        <th>Sección</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in details %}
+                        <tr>
+                            <td>{{ row.curso_codigo }} · {{ row.curso_nombre }}</td>
+                            <td>{{ row.codigo_seccion }}</td>
+                            <td><span class="badge {% if row.estado == 'MATRICULADO' %}success{% elif row.estado == 'LISTA_ESPERA' %}warning{% else %}{{ '' }}{% endif %}">{{ row.estado }}</span></td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="3">Todavía no has agregado cursos.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <article class="card">
+        <div class="card-header">
+            <h2>Facturas recientes</h2>
+            <a href="/student/finance">Ir a finanzas</a>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Factura</th>
+                        <th>Estado</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in invoices %}
+                        <tr>
+                            <td>{{ row.numero_factura }}</td>
+                            <td>{{ row.estado }}</td>
+                            <td>{{ row.saldo|currency }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="3">No hay estados de cuenta generados.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>
+{% endblock %}

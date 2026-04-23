@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Finanzas{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">RF-17 a RF-19</span>
+        <h1>Facturación y pagos</h1>
+        <p class="muted">Este entorno usa una pasarela mock para probar el flujo completo de pago, recibo y confirmación de matrícula.</p>
+    </div>
+</section>
+
+<section class="grid grid-2">
+    <article class="card">
+        <div class="card-header">
+            <h2>Estados de cuenta</h2>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Factura</th>
+                        <th>Total</th>
+                        <th>Saldo</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for invoice in invoices %}
+                        <tr>
+                            <td>{{ invoice.numero_factura }}</td>
+                            <td>{{ invoice.total|currency }}</td>
+                            <td>{{ invoice.saldo|currency }}</td>
+                            <td>{{ invoice.estado }}</td>
+                            <td>
+                                {% if invoice.saldo > 0 %}
+                                    <form method="post" action="/student/pay/{{ invoice.id }}">
+                                        <button class="button small" type="submit">Pagar ahora</button>
+                                    </form>
+                                {% else %}
+                                    <span class="badge success">Saldada</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="5">No hay facturas generadas.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <article class="card">
+        <div class="card-header">
+            <h2>Pagos registrados</h2>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Referencia</th>
+                        <th>Monto</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                        <tr>
+                            <td>{{ payment.referencia_pago }}</td>
+                            <td>{{ payment.monto|currency }}</td>
+                            <td>{{ payment.fecha_pago|format_datetime }}</td>
+                            <td>{{ payment.estado }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="4">No hay pagos registrados.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>
+
+<section class="grid grid-2">
+    <article class="card">
+        <div class="card-header">
+            <h2>Recibos</h2>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Recibo</th>
+                        <th>Monto</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for receipt in receipts %}
+                        <tr>
+                            <td>{{ receipt.numero_recibo }}</td>
+                            <td>{{ receipt.monto|currency }}</td>
+                            <td>{{ receipt.fecha_emision|format_datetime }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="3">Todavía no hay recibos emitidos.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <article class="card">
+        <div class="card-header">
+            <h2>Comprobantes de matrícula</h2>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Comprobante</th>
+                        <th>Matrícula</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for voucher in vouchers %}
+                        <tr>
+                            <td>{{ voucher.numero_comprobante }}</td>
+                            <td>{{ voucher.numero_matricula }}</td>
+                            <td>{{ voucher.fecha_emision|format_datetime }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="3">Todavía no se ha emitido un comprobante de matrícula.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>
+{% endblock %}

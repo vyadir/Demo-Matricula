@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Reportes{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">RF-20 a RF-22</span>
+        <h1>Reportes y exportación</h1>
+        <p class="muted">Consulta indicadores operativos y exporta datos en CSV.</p>
+    </div>
+    <div class="button-row">
+        <a class="button" href="/reports/export/matriculas.csv">Exportar matrículas</a>
+        <a class="button ghost" href="/reports/export/finanzas.csv">Exportar finanzas</a>
+    </div>
+</section>
+
+<section class="grid grid-2">
+    <article class="card">
+        <div class="card-header"><h2>Reporte de matrícula</h2></div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Carnet</th>
+                        <th>Estudiante</th>
+                        <th>Periodo</th>
+                        <th>Estado</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in enrollment %}
+                        <tr>
+                            <td>{{ row.numero_matricula }}</td>
+                            <td>{{ row.carnet }}</td>
+                            <td>{{ row.nombres }} {{ row.apellidos }}</td>
+                            <td>{{ row.codigo_periodo }}</td>
+                            <td>{{ row.estado }}</td>
+                            <td>{{ row.total|currency }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="6">Sin datos.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <article class="card">
+        <div class="card-header"><h2>Reporte financiero</h2></div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Factura</th>
+                        <th>Carnet</th>
+                        <th>Total</th>
+                        <th>Pagado</th>
+                        <th>Saldo</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in financial %}
+                        <tr>
+                            <td>{{ row.numero_factura }}</td>
+                            <td>{{ row.carnet }}</td>
+                            <td>{{ row.total|currency }}</td>
+                            <td>{{ row.monto_pagado|currency }}</td>
+                            <td>{{ row.saldo|currency }}</td>
+                            <td>{{ row.estado }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="6">Sin datos.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>
+{% endblock %}

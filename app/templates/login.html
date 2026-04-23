@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Acceso · Sistema de Matrícula{% endblock %}
+{% block content %}
+<section class="grid grid-2 login-layout">
+    <article class="card form-card">
+        <span class="eyebrow">Acceso seguro</span>
+        <h1>Ingresar al portal</h1>
+        <p class="muted">Usa tus credenciales institucionales o tu cuenta autorizada para entrar al sistema.</p>
+        <form method="post" action="/login" class="stack compact-top">
+            <label>
+                Usuario o correo
+                <input type="text" name="username" placeholder="usuario@universidad.edu" required>
+            </label>
+            <label>
+                Contraseña
+                <input type="password" name="password" placeholder="••••••••" required>
+            </label>
+            <button class="button" type="submit">Acceder</button>
+        </form>
+        <div class="divider"></div>
+        <a class="button ghost" href="/auth/sso">Acceso institucional</a>
+    </article>
+
+    <article class="card surface-soft">
+        {% if show_demo_users %}
+            <span class="eyebrow">Entorno de demostración</span>
+            <h2>Accesos de prueba</h2>
+            <p class="muted">Disponibles solo para validación funcional y revisión de roles.</p>
+            <div class="stack compact-top">
+                {% for user in demo_users %}
+                    <form method="post" action="/auth/sso/mock" class="inline-card">
+                        <input type="hidden" name="username" value="{{ user.nombre_usuario }}">
+                        <div>
+                            <strong>{{ user.nombres }} {{ user.apellidos }}</strong>
+                            <div class="muted">{{ user.nombre_usuario }} · {{ user.correo }}</div>
+                        </div>
+                        <button class="button small" type="submit">Entrar</button>
+                    </form>
+                {% endfor %}
+            </div>
+        {% else %}
+            <span class="eyebrow">Soporte de acceso</span>
+            <h2>Ingreso institucional</h2>
+            <p class="muted">Si presentas inconvenientes para ingresar, valida primero tus credenciales y luego contacta al administrador del sistema.</p>
+            <div class="details-list compact-top">
+                <div>
+                    <dt>Método recomendado</dt>
+                    <dd>Acceso institucional</dd>
+                </div>
+                <div>
+                    <dt>Disponibilidad</dt>
+                    <dd>Portal web responsive</dd>
+                </div>
+                <div>
+                    <dt>Uso esperado</dt>
+                    <dd>Estudiantes y áreas administrativas</dd>
+                </div>
+            </div>
+        {% endif %}
+    </article>
+</section>
+{% endblock %}

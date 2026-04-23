@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ current_user.nombres ~ ' · ' if current_user else '' }}{{ request.app.title }}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/app.css">
+    <script defer src="/static/js/app.js"></script>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Ir al contenido principal</a>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="container nav">
+                <a href="/" class="brand">
+                    <span class="brand-mark">SM</span>
+                    <div>
+                        <strong>Sistema de Matrícula</strong>
+                        <small>Gestión académica y financiera</small>
+                    </div>
+                </a>
+                <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-menu">
+                    ☰
+                </button>
+                <nav id="site-menu" class="site-menu" data-menu>
+                    <a href="/">Inicio</a>
+                    {% if current_user %}
+                        <a href="/app">Panel</a>
+                        {% if current_user.roles and 'ESTUDIANTE' in current_user.roles %}
+                            <a href="/student/offer">Oferta</a>
+                            <a href="/student/enrollment">Matrícula</a>
+                            <a href="/student/finance">Pagos</a>
+                            <a href="/student/notifications">Avisos</a>
+                        {% endif %}
+                        {% if current_user.roles and ('ADMIN_TI' in current_user.roles or 'REGISTRO_ACADEMICO' in current_user.roles or 'TESORERIA' in current_user.roles) %}
+                            <a href="/admin/catalogs">Catálogos</a>
+                        {% endif %}
+                        {% if current_user.roles and ('ADMIN_TI' in current_user.roles or 'REGISTRO_ACADEMICO' in current_user.roles or 'TESORERIA' in current_user.roles or 'AUDITOR' in current_user.roles) %}
+                            <a href="/reports">Reportes</a>
+                        {% endif %}
+                        {% if current_user.roles and ('ADMIN_TI' in current_user.roles or 'AUDITOR' in current_user.roles) %}
+                            <a href="/audit">Auditoría</a>
+                        {% endif %}
+                        <a class="button ghost small" href="/logout">Salir</a>
+                    {% else %}
+                        <a href="/login">Acceder</a>
+                        <a class="button small" href="/auth/sso">Acceso institucional</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </header>
+
+        <main id="main-content" class="container page-content">
+            {% if flashes %}
+                <section class="flash-stack" aria-live="polite">
+                    {% for flash in flashes %}
+                        <article class="flash flash-{{ flash.level }}">{{ flash.message }}</article>
+                    {% endfor %}
+                </section>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="site-footer">
+            <div class="container footer-inner">
+                <div>
+                    <strong>Sistema de Matrícula</strong>
+                    <small>Plataforma institucional para inscripción, pagos y seguimiento académico.</small>
+                </div>
+                <span class="footer-mark">Seguro · Claro · Responsable</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

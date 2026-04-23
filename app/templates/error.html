@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Error{% endblock %}
+{% block content %}
+<article class="card">
+    <h1>{{ error_title }}</h1>
+    <p>{{ error_message }}</p>
+    <a class="button" href="/app">Volver al panel</a>
+</article>
+{% endblock %}
