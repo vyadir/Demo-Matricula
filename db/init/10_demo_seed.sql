@@ -25,6 +25,8 @@ JOIN roles r ON
     (u.nombre_usuario = 'tesoreria' AND r.codigo = 'TESORERIA') OR
     (u.nombre_usuario = 'estudiante' AND r.codigo = 'ESTUDIANTE') OR
     (u.nombre_usuario = 'estudiante2' AND r.codigo = 'ESTUDIANTE') OR
+    (u.nombre_usuario = 'estudiante3' AND r.codigo = 'ESTUDIANTE') OR
+    (u.nombre_usuario = 'estudiante4' AND r.codigo = 'ESTUDIANTE') OR
     (u.nombre_usuario = 'auditor' AND r.codigo = 'AUDITOR');
 
 -- ===========================
