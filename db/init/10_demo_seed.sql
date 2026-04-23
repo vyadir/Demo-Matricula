@@ -10,10 +10,9 @@ VALUES
     ('registro', 'registro@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$19f0f7cf2c57ffc0d4440693f7de798b658071732423e8da689ed7e87bcecc5a', 'Raúl', 'Registro', '7000-1002'),
     ('tesoreria', 'tesoreria@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$4b321e077e4ca9f2f1f4a9156d3dcd6886365dd419d6e011f75ce6ab21386610', 'Teresa', 'Tesorería', '7000-1003'),
     ('estudiante', 'estudiante@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$dc36b01b043d734ece0be5b2bbd9cef268ef37115275b3bbf2c193b26cec26a2', 'Elena', 'Estudiante', '7000-1004'),
-    ('estudiante2', 'estudiante3@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$dc36b01b043d734ece0be5b2bbd9cef268ef37115275b3bbf2c193b26cec26a2', 'Mario', 'Mora', '7000-1005'),
+    ('estudiante2', 'estudiante2@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$dc36b01b043d734ece0be5b2bbd9cef268ef37115275b3bbf2c193b26cec26a2', 'Mario', 'Mora', '7000-1005'),
     ('estudiante3', 'estudiante3@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$dc36b01b043d734ece0be5b2bbd9cef268ef37115275b3bbf2c193b26cec26a2', 'Pablo', 'Hernández', '7000-1005'),
-    ('estudiante3', 'estudiante3@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$dc36b01b043d734ece0be5b2bbd9cef268ef37115275b3bbf2c193b26cec26a2', 'Lucía', 'Rojas', '7000-1005'),
-
+    ('estudiante4', 'estudiante4@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$dc36b01b043d734ece0be5b2bbd9cef268ef37115275b3bbf2c193b26cec26a2', 'Lucía', 'Rojas', '7000-1005'),
     ('auditor', 'auditor@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$725c44ca3f45f0f1ec5f6287380fbe14eba8820bfe97206aced88a4f8ff6895a', 'Ana', 'Auditor', '7000-1006'),
     ('docente', 'docente@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$d67578fa2d2e63913662a937440085f5da48b8410812dddf33f396c654ea4aaa', 'Daniel', 'Docente', '7000-1007');
 
