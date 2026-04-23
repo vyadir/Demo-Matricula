@@ -391,3 +391,32 @@ FROM usuarios u
 JOIN programas_academicos p ON p.codigo = 'ING-SIS'
 JOIN planes_estudio pe ON pe.codigo = 'PLAN-ING-SIS-2026'
 WHERE u.nombre_usuario = 'estudiante4';
+
+
+INSERT INTO usuarios (nombre_usuario, correo, hash_contrasena, nombres, apellidos, telefono)
+VALUES
+('estudiante5', 'estudiante5@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$dc36b01b043d734ece0be5b2bbd9cef268ef37115275b3bbf2c193b26cec26a2', 'Sofía', 'Vargas', '7000-1010');
+
+INSERT INTO usuario_rol (usuario_id, rol_id)
+SELECT u.id, r.id
+FROM usuarios u
+JOIN roles r ON r.codigo = 'ESTUDIANTE'
+WHERE u.nombre_usuario = 'estudiante5';
+
+INSERT INTO estudiantes (
+    usuario_id, carnet, programa_academico_id, plan_estudio_id, fecha_ingreso,
+    promedio_actual, creditos_aprobados, estado
+)
+SELECT
+    u.id,
+    '20260005',
+    p.id,
+    pe.id,
+    CURRENT_DATE - INTERVAL '90 day',
+    84.20,
+    9,
+    'ACTIVO'
+FROM usuarios u
+JOIN programas_academicos p ON p.codigo = 'ING-SIS'
+JOIN planes_estudio pe ON pe.codigo = 'PLAN-ING-SIS-2026'
+WHERE u.nombre_usuario = 'estudiante5';
