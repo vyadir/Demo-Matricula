@@ -11,8 +11,6 @@ VALUES
     ('tesoreria', 'tesoreria@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$4b321e077e4ca9f2f1f4a9156d3dcd6886365dd419d6e011f75ce6ab21386610', 'Teresa', 'Tesorería', '7000-1003'),
     ('estudiante', 'estudiante@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$dc36b01b043d734ece0be5b2bbd9cef268ef37115275b3bbf2c193b26cec26a2', 'Elena', 'Estudiante', '7000-1004'),
     ('estudiante2', 'estudiante2@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$dc36b01b043d734ece0be5b2bbd9cef268ef37115275b3bbf2c193b26cec26a2', 'Mario', 'Mora', '7000-1005'),
-    ('estudiante3', 'estudiante3@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$dc36b01b043d734ece0be5b2bbd9cef268ef37115275b3bbf2c193b26cec26a2', 'Pablo', 'Hernández', '7000-1005'),
-    ('estudiante4', 'estudiante4@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$dc36b01b043d734ece0be5b2bbd9cef268ef37115275b3bbf2c193b26cec26a2', 'Lucía', 'Rojas', '7000-1005'),
     ('auditor', 'auditor@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$725c44ca3f45f0f1ec5f6287380fbe14eba8820bfe97206aced88a4f8ff6895a', 'Ana', 'Auditor', '7000-1006'),
     ('docente', 'docente@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$d67578fa2d2e63913662a937440085f5da48b8410812dddf33f396c654ea4aaa', 'Daniel', 'Docente', '7000-1007');
 
@@ -334,3 +332,34 @@ FROM estudiantes e
 JOIN usuarios u ON u.id = e.usuario_id
 JOIN periodos_academicos p ON p.codigo = '2026-1'
 WHERE u.nombre_usuario = 'estudiante';
+
+
+
+
+INSERT INTO usuarios (nombre_usuario, correo, hash_contrasena, nombres, apellidos, telefono)
+VALUES
+('estudiante3', 'estudiante3@demo.edu', 'pbkdf2_sha256$390000$staticdemo123456$dc36b01b043d734ece0be5b2bbd9cef268ef37115275b3bbf2c193b26cec26a2', 'Laura', 'Pérez', '7000-1008');
+
+INSERT INTO usuario_rol (usuario_id, rol_id)
+SELECT u.id, r.id
+FROM usuarios u
+JOIN roles r ON r.codigo = 'ESTUDIANTE'
+WHERE u.nombre_usuario = 'estudiante3';
+
+INSERT INTO estudiantes (
+    usuario_id, carnet, programa_academico_id, plan_estudio_id, fecha_ingreso,
+    promedio_actual, creditos_aprobados, estado
+)
+SELECT
+    u.id,
+    '20260003',
+    p.id,
+    pe.id,
+    CURRENT_DATE - INTERVAL '180 day',
+    79.25,
+    0,
+    'ACTIVO'
+FROM usuarios u
+JOIN programas_academicos p ON p.codigo = 'ING-SIS'
+JOIN planes_estudio pe ON pe.codigo = 'PLAN-ING-SIS-2026'
+WHERE u.nombre_usuario = 'estudiante3';
