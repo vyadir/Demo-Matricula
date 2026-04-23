@@ -1,20 +1,5 @@
 # Sistema de Matrícula Universitaria
 
-Aplicación web en **Python + FastAPI + PostgreSQL** dockerizada para cubrir el requerimiento funcional del sistema de matrícula sobre el modelo de base de datos entregado.
-
-## Stack
-- FastAPI + Jinja2
-- PostgreSQL 16
-- Docker / Docker Compose
-- CSS responsivo sin dependencias pesadas
-
-## Diseño visual
-La interfaz usa una paleta sobria orientada a confianza y legibilidad:
-- **Base neutra** para reducir fatiga visual
-- **Azul marino y azul institucional** para comunicar estabilidad y control
-- **Acento verde azulado** para acciones, estados positivos y equilibrio cromático
-
-Se trabajó con una lógica **60-30-10** para mantener contraste, claridad jerárquica y un look más institucional que promocional.
 
 ## Cómo ejecutar
 
